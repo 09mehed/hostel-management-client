@@ -4,44 +4,54 @@ import { TbFidgetSpinner } from 'react-icons/tb'
 import { imageUpload } from '../../api/utils'
 import { FaGoogle } from 'react-icons/fa'
 import { toast } from 'react-toastify'
+import { useForm } from 'react-hook-form'
+import useAxiosPublic from '../../hooks/useAxiosPublic'
 
 const SignUp = () => {
-  const { handleSignUp, updateUserProfile, handleGoogleLogin, loading } = useAuth()
+  const axiosPublic = useAxiosPublic()
+  const { handleSignUp, updateUserProfile, handleGoogleLogin, loading, user } = useAuth()
+  const { register, handleSubmit, reset, formState: { errors }, } = useForm();
   const navigate = useNavigate()
-  // form submit handler
-  const handleSubmit = async event => {
-    event.preventDefault()
-    const form = event.target
-    const name = form.name.value
-    const email = form.email.value
-    const password = form.password.value
-    const image = form.image.files[0]
-    
-    const photoURL = await imageUpload(image)
 
+  const onSubmit = async (data) => {
     try {
-      //2. User Registration
-      const result = await handleSignUp(email, password)
-
-      //3. Save username & profile photo
-      await updateUserProfile(name, photoURL)
-      // await saveUser({...result?.user, displayName: name, photoURL})
-      navigate('/')
-      toast.success('Signup Successful')
+      const { name, email, password, image } = data;
+      const photoURL = await imageUpload(image[0]);
+      const result = await handleSignUp(email, password);
+      await updateUserProfile(name, photoURL);
+      const userInfo = {
+        name: name,
+        email: email
+      }
+      axiosPublic.post('/users', userInfo)
+        .then(res => {
+          if (res.data.insertedId) {
+            reset()
+            toast.success('Signup Successful');
+            navigate('/');
+          }
+        })
     } catch (err) {
-      console.log(err)
-      toast.error(err?.message)
+      console.error(err);
+      toast.error(err?.message);
     }
-  }
+  };
 
   // Handle Google Signin
   const handleGoogleSignIn = async () => {
     try {
       //User Registration using google
       const data = await handleGoogleLogin()
-      // await saveUser(data?.user)
-      navigate('/')
-      toast.success('Signup Successful')
+      const userInfo = {
+        name: data.user.displayName,
+        email: data.user.email
+      }
+      axiosPublic.post('/users', userInfo)
+      .then(res => {
+        console.log(res.data);
+        toast.success('Signup Successful');
+        navigate('/');  
+      })
     } catch (err) {
       console.log(err)
       toast.error(err?.message)
@@ -55,7 +65,7 @@ const SignUp = () => {
           <p className='text-sm text-gray-400'>Welcome to PlantNet</p>
         </div>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           noValidate=''
           action=''
           className='space-y-6 ng-untouched ng-pristine ng-valid'
@@ -69,22 +79,29 @@ const SignUp = () => {
                 type='text'
                 name='name'
                 id='name'
-                placeholder='Enter Your Name Here'
-                className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900'
-                data-temp-mail-org='0'
+                {...register('name', { required: 'Name is required' })}
+                placeholder="Enter Your Name Here"
+                className={`w-full px-3 py-2 border rounded-md ${errors.name ? 'border-red-500' : 'border-gray-300'
+                  } focus:outline-lime-500 bg-gray-200 text-gray-900`}
               />
+              {errors.name && (
+                <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+              )}
             </div>
             <div>
               <label htmlFor='image' className='block mb-2 text-sm'>
                 Select Image:
               </label>
               <input
-                required
                 type='file'
                 id='image'
-                name='image'
-                accept='image/*'
+                {...register('image', { required: 'Image is required' })}
+                accept="image/*"
+                className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900"
               />
+              {errors.image && (
+                <p className="text-sm text-red-500 mt-1">{errors.image.message}</p>
+              )}
             </div>
             <div>
               <label htmlFor='email' className='block mb-2 text-sm'>
@@ -92,13 +109,15 @@ const SignUp = () => {
               </label>
               <input
                 type='email'
-                name='email'
                 id='email'
-                required
-                placeholder='Enter Your Email Here'
-                className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900'
-                data-temp-mail-org='0'
+                {...register('email', { required: 'Email is required' })}
+                placeholder="Enter Your Email Here"
+                className={`w-full px-3 py-2 border rounded-md ${errors.email ? 'border-red-500' : 'border-gray-300'
+                  } focus:outline-lime-500 bg-gray-200 text-gray-900`}
               />
+              {errors.email && (
+                <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+              )}
             </div>
             <div>
               <div className='flex justify-between'>
@@ -108,13 +127,21 @@ const SignUp = () => {
               </div>
               <input
                 type='password'
-                name='password'
-                autoComplete='new-password'
                 id='password'
-                required
-                placeholder='*******'
-                className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900'
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: {
+                    value: 6,
+                    message: 'Password must be at least 6 characters long',
+                  },
+                })}
+                placeholder="*******"
+                className={`w-full px-3 py-2 border rounded-md ${errors.password ? 'border-red-500' : 'border-gray-300'
+                  } focus:outline-lime-500 bg-gray-200 text-gray-900`}
               />
+              {errors.password && (
+                <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
+              )}
             </div>
           </div>
 
