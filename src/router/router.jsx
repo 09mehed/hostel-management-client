@@ -10,6 +10,11 @@ import Profile from "../Pages/UserDashboard/Profile";
 import PrivateRoute from "./PrivateRoute";
 import AddMeal from "../Pages/AdminDashboard/AddMeal/AddMeal";
 import ManageUser from "../Pages/AdminDashboard/ManageUser/ManageUser";
+import AllMeals from "../Pages/AdminDashboard/AllMeals/AllMeals";
+import AddProfile from "../Pages/AdminDashboard/AddProfile/AddProfile";
+import AdminRoute from "./AdminRoute";
+import UpdateItems from "../Pages/AdminDashboard/UpdateItems/UpdateItems";
+import MealDetail from "../components/MealDetail/MealDetail";
 
 const router = createBrowserRouter([
     {
@@ -20,7 +25,11 @@ const router = createBrowserRouter([
                 path: '/',
                 element: <Home></Home>
             },
-            
+            {
+                path: 'mealDetails/:id',
+                element: <PrivateRoute><MealDetail></MealDetail></PrivateRoute>,
+                loader: ({ params }) => fetch(`http://localhost:5000/meal/${params.id}`),
+            },
             {
                 path: 'signIn',
                 element: <SignIn></SignIn>
@@ -42,12 +51,25 @@ const router = createBrowserRouter([
             // admin route
             {
                 path: 'addMeal',
-                element: <AddMeal></AddMeal>
+                element: <AdminRoute><AddMeal></AddMeal></AdminRoute>
             },
             {
                 path: 'manageUser',
-                element: <ManageUser></ManageUser>
-            }
+                element: <AdminRoute><ManageUser></ManageUser></AdminRoute>
+            },
+            {
+                path: 'allMeal',
+                element: <AdminRoute><AllMeals></AllMeals></AdminRoute>
+            },
+            {
+                path: 'adminProfile',
+                element: <AdminRoute><AddProfile></AddProfile></AdminRoute>
+            },
+            {
+                path: 'updateItems/:id',
+                element: <AdminRoute><UpdateItems></UpdateItems></AdminRoute>,
+                loader: ({params}) => fetch(`http://localhost:5000/meal/${params.id}`)
+            },
         ]
     }
 ]);

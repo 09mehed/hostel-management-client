@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Silver",
+        "price": "$25.99",
+        "benefits": ["Access to basic features", "5% discount on products", "Weekly newsletter"],
+        "bgColor": "bg-gray-300"
+    },
+    {
+        "name": "Gold",
+        "price": "$45.99",
+        "benefits": ["Access to all features", "15% discount on products", "Priority customer support"],
+        "bgColor": "bg-yellow-500"
+    },
+    {
+        "name": "Platinum",
+        "price": "$95.99",
+        "benefits": ["All features + exclusive offers", "25% discount on products", "24/7 premium support"],
+        "bgColor": "bg-blue-600"
+    }
+]

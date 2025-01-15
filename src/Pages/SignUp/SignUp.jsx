@@ -14,6 +14,7 @@ const SignUp = () => {
   const navigate = useNavigate()
 
   const onSubmit = async (data) => {
+    console.log(data);
     try {
       const { name, email, password, image } = data;
       const photoURL = await imageUpload(image[0]);
@@ -21,7 +22,8 @@ const SignUp = () => {
       await updateUserProfile(name, photoURL);
       const userInfo = {
         name: name,
-        email: email
+        email: email,
+        photoURL
       }
       axiosPublic.post('/users', userInfo)
         .then(res => {

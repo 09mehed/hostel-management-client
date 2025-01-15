@@ -16,7 +16,7 @@ const Dashboard = () => {
                     {
                         isAdmin ? <>
                             <li className='text-xl'>
-                                <NavLink to='/dashboard/profile'> <FaUser></FaUser> Admin Profile</NavLink>
+                                <NavLink to='/dashboard/adminProfile'> <FaUser></FaUser> Admin Profile</NavLink>
                             </li>
                             <li className='text-xl'>
                                 <NavLink to='/dashboard/manageUser'> <MdOutlineRequestPage /> Manage Users</NavLink>
@@ -25,16 +25,16 @@ const Dashboard = () => {
                                 <NavLink to='/dashboard/addMeal'> <FaAddressBook /> Add Meal</NavLink>
                             </li>
                             <li className='text-xl'>
-                                <NavLink to='/dashboard/profile'> <FcViewDetails /> All Meals</NavLink>
+                                <NavLink to='/dashboard/allMeal'> <FcViewDetails /> All Meals</NavLink>
                             </li>
                             <li className='text-xl'>
-                                <NavLink to='/dashboard/profile'> <MdOutlineRateReview /> All Reviews</NavLink>
+                                <NavLink to='/dashboard/allReview'> <MdOutlineRateReview /> All Reviews</NavLink>
                             </li>
                             <li className='text-xl'>
-                                <NavLink to='/dashboard/profile'> <FaServer></FaServer> Serve Meals</NavLink>
+                                <NavLink to='/dashboard/allReview'> <FaServer></FaServer> Serve Meals</NavLink>
                             </li>
                             <li className='text-xl'>
-                                <NavLink to='/dashboard/profile'> <MdUpcoming /> Upcoming Meals</NavLink>
+                                <NavLink to='/dashboard/allReview'> <MdUpcoming /> Upcoming Meals</NavLink>
                             </li>
                         </>
                             : <>

@@ -1,74 +1,77 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import { useLoaderData } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
-import useAxiosPublic from '../../../hooks/useAxiosPublic';
-import Swal from 'sweetalert2';
-
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`
 
-const AddMeal = () => {
+const UpdateItems = () => {
     const { register, handleSubmit, reset } = useForm();
-    const axiosSecure = useAxiosSecure();
     const axiosPublic = useAxiosPublic()
-    const { user } = useAuth();
+    const axiosSecure = useAxiosSecure()
+    const item = useLoaderData() 
+    const {user} = useAuth()
+    console.log(item);
 
     const onSubmit = async (data) => {
-        try {
-            const imageFile = { image: data.image[0] }
-
-            const res = await axiosPublic.post(image_hosting_api, imageFile, {
-                headers: {
-                    'content-type': 'multipart/form-data'
+            try {
+                const imageFile = { image: data.image[0] }
+    
+                const res = await axiosPublic.post(image_hosting_api, imageFile, {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                });
+                console.log(res.data);
+    
+                if (res.data.success) {
+                     // Prepare meal data
+                    const mealData = {
+                        title: data.title,
+                        category: data.category,
+                        image: res.data.data.display_url,
+                        ingredients: data.ingredients.split(',').map((item) => item.trim()),
+                        description: data.description,
+                        price: parseFloat(data.price),
+                        distributor: user.displayName,
+                        email: user.email,
+                        rating: 0,
+                        likes: 0,
+                        reviews_count: 0,
+                        post_time: new Date().toISOString(),
+                    };
+    
+                    // Post meal data to the server
+                    const response = await axiosSecure.post('/meal', mealData);
+                    if (response.data.insertedId) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Meal added successfully!",
+                            showConfirmButton: false,
+                            timer: 1500
+                          });
+                        reset();
+                    }
                 }
-            });
-            console.log(res.data);
-
-            if (res.data.success) {
-                 // Prepare meal data
-                const mealData = {
-                    title: data.title,
-                    category: data.category,
-                    image: res.data.data.display_url,
-                    ingredients: data.ingredients.split(',').map((item) => item.trim()),
-                    description: data.description,
-                    price: parseFloat(data.price),
-                    distributor: user.displayName,
-                    email: user.email,
-                    rating: 0,
-                    likes: 0,
-                    reviews_count: 0,
-                    post_time: new Date().toISOString(),
-                };
-
-                // Post meal data to the server
-                const response = await axiosSecure.post('/meal', mealData);
-                if (response.data.insertedId) {
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "Meal added successfully!",
-                        showConfirmButton: false,
-                        timer: 1500
-                      });
-                    reset();
-                }
+            } catch (error) {
+                console.error('Error adding meal:', error);
             }
-        } catch (error) {
-            console.error('Error adding meal:', error);
-        }
-    };
+        };
 
     return (
-        <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md">
-            <h2 className="text-2xl font-bold mb-4">Add Meal</h2>
+        <div className='w-11/12 mx-auto py-3'>
+            <h2 className='text-3xl text-center py-5'>Update Item</h2>
+
             <form onSubmit={handleSubmit(onSubmit)}>
                 {/* Title */}
                 <label className="block mb-2">Title</label>
                 <input
                     type="text"
+                    
                     {...register('title', { required: true })}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
                 />
@@ -77,6 +80,7 @@ const AddMeal = () => {
                 <label className="block mb-2">Category</label>
                 <input
                     type="text"
+                    
                     {...register('category', { required: true })}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
                 />
@@ -93,13 +97,14 @@ const AddMeal = () => {
                 <label className="block mb-2">Ingredients (comma-separated)</label>
                 <input
                     type="text"
+                    // defaultValue={ingredients}
                     {...register('ingredients', { required: true })}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
                 />
 
                 {/* Description */}
                 <label className="block mb-2">Description</label>
-                <textarea
+                <textarea 
                     {...register('description', { required: true })}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
                 ></textarea>
@@ -108,6 +113,7 @@ const AddMeal = () => {
                 <label className="block mb-2">Price</label>
                 <input
                     type="number"
+                    // defaultValue={price}
                     step="0.01"
                     {...register('price', { required: true })}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
@@ -136,11 +142,11 @@ const AddMeal = () => {
                     type="submit"
                     className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
                 >
-                    Add Meal
+                    Update Meal
                 </button>
             </form>
         </div>
     );
 };
 
-export default AddMeal;
+export default UpdateItems;

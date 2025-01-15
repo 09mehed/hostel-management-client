@@ -5,8 +5,6 @@ import { FaGoogle } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import { useForm } from 'react-hook-form'
 import useAxiosPublic from '../../hooks/useAxiosPublic'
-// import LoadingSpinner from '../../components/Shared/LoadingSpinner'
-// import { saveUser } from '../../api/utils'
 
 const SignIn = () => {
   const { handleSignIn, handleGoogleLogin, loading, user } = useAuth()
