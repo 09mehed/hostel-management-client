@@ -39,16 +39,16 @@ const Dashboard = () => {
                         </>
                             : <>
                                 <li className='text-xl'>
-                                    <NavLink to='dashboard/profile'> <FaUser></FaUser> My Profile</NavLink>
+                                    <NavLink to='/dashboard/profile'> <FaUser></FaUser> My Profile</NavLink>
                                 </li>
                                 <li className='text-xl'>
-                                    <NavLink to='dashboard/profile'> <MdOutlineRequestPage /> Requested Meals</NavLink>
+                                    <NavLink to='/dashboard/requestMeal'> <MdOutlineRequestPage /> Requested Meals</NavLink>
                                 </li>
                                 <li className='text-xl'>
-                                    <NavLink to='dashboard/profile'> <MdReviews /> My Reviews</NavLink>
+                                    <NavLink to='/dashboard/myReview'> <MdReviews /> My Reviews</NavLink>
                                 </li>
                                 <li className='text-xl'>
-                                    <NavLink to='dashboard/profile'> <MdPayment /> Payment History</NavLink>
+                                    <NavLink to='/dashboard/payment'> <MdPayment /> Payment History</NavLink>
                                 </li>
                             </>
                     }

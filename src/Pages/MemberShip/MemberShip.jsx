@@ -1,13 +1,28 @@
 import React, { useEffect, useState } from 'react';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
 
 const Membership = () => {
-    const [menu, setMenu] = useState([])
+    const axiosSecure = useAxiosSecure()
 
-    useEffect(() => {
-        fetch('membership.json')
-        .then(res => res.json())
-        .then(data => setMenu(data))
-    })
+    // useEffect(() => {
+    //     fetch('membership.json')
+    //     .then(res => res.json())
+    //     .then(data => setMenu(data))
+    // })
+
+    // Fetch membership data using useQuery
+    const { data: menu = [], isLoading } = useQuery({
+        queryKey: ['packages'],
+        queryFn: async() => {
+            const res = await axiosSecure.get('/packages')
+            return res.data
+        }
+    });
+    
+    if(isLoading){
+        return <progress className='progress w-56'></progress>
+    }
 
     return (
         <div className="w-11/12 mx-auto my-12">

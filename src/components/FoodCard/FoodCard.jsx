@@ -12,7 +12,7 @@ const FoodCard = ({ item }) => {
                         alt="Shoes"
                         className='h-48 w-full' />
                 </figure>
-                <div className="card-body">
+                <div className="py-3 ">
                     <h2 className="card-title">{title}</h2>
                     <div className='flex justify-between items-center'>
                         <p>Rating: {rating}</p>

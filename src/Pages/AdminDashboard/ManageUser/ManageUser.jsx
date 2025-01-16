@@ -3,14 +3,16 @@ import React from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { FaUsers } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
 
 const ManageUser = () => {
     const axiosSecure = useAxiosSecure()
+    const axiosPublic = useAxiosPublic()
 
     const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await axiosSecure.get('/users',)
+            const res = await axiosSecure.get('/users')
             return res.data
         }
     })

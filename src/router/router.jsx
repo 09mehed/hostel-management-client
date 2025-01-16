@@ -15,6 +15,13 @@ import AddProfile from "../Pages/AdminDashboard/AddProfile/AddProfile";
 import AdminRoute from "./AdminRoute";
 import UpdateItems from "../Pages/AdminDashboard/UpdateItems/UpdateItems";
 import MealDetail from "../components/MealDetail/MealDetail";
+import RequestMeal from "../Pages/MyDashboard/RequestMeal";
+import MyProfile from "../Pages/MyDashboard/MyProfile";
+import MyReview from "../Pages/MyDashboard/MyReview";
+import Payment from "../Pages/MyDashboard/Payment";
+import JoinUs from "../Pages/JoinUs/JoinUs";
+import Meal from "../Pages/Meal/Meal";
+import UpCommingMeal from "../Pages/UpCommingMeal/UpCommingMeal";
 
 const router = createBrowserRouter([
     {
@@ -29,6 +36,18 @@ const router = createBrowserRouter([
                 path: 'mealDetails/:id',
                 element: <PrivateRoute><MealDetail></MealDetail></PrivateRoute>,
                 loader: ({ params }) => fetch(`http://localhost:5000/meal/${params.id}`),
+            },
+            {
+                path: 'meal',
+                element: <Meal></Meal>
+            },
+            {
+                path: 'upcoming-meals',
+                element: <UpCommingMeal></UpCommingMeal>
+            },
+            {
+                path: 'join-us',
+                element: <JoinUs></JoinUs>
             },
             {
                 path: 'signIn',
@@ -46,7 +65,19 @@ const router = createBrowserRouter([
         children: [
             {
                 path: 'profile',
-                element: <Profile></Profile>
+                element: <MyProfile></MyProfile>
+            },
+            {
+                path: 'requestMeal',
+                element: <RequestMeal></RequestMeal>
+            },
+            {
+                path: 'myReview',
+                element: <MyReview></MyReview>
+            },
+            {
+                path: 'payment',
+                element: <Payment></Payment>
             },
             // admin route
             {

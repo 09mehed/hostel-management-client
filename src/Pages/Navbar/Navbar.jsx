@@ -1,21 +1,33 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/Hotel.jpg'
 import useAuth from '../../hooks/useAuth';
-import avatarImg from '../../assets/placeholder.jpg'
+import { FaBell } from 'react-icons/fa';
+import { LikeContext } from '../../AuthProvider/LikeProvider';
 
 const Navbar = () => {
     const { user, logout } = useAuth()
-    const [isOpen, setIsOpen] = useState(false)
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const { likeCount } = useContext(LikeContext);
 
     const handleLogout = () => {
         logout()
     }
 
     const links = <>
-        <li className='text-xl'><Link to='/'>Home</Link></li>
-        <li className='text-xl'><Link to='/'>Meals</Link></li>
-        <li className='text-xl'><Link to='/'>Upcoming Meals</Link></li>
+        <li><Link to="/" className="hover:text-blue-400">Home</Link></li>
+        <li><Link to="/meal" className="hover:text-blue-400">Meals</Link></li>
+        <li><Link to="/upcoming-meals" className="hover:text-blue-400">Upcoming Meals</Link></li>
+        <li>
+            {/* Notification Icon */}
+            <button className="relative">
+                <FaBell className="text-2xl" />
+                {/* Optional: Notification Count */}
+                <span className="absolute -top-1 -right-2 bg-red-500 text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    {likeCount}
+                </span>
+            </button>
+        </li>
     </>
 
     return (
@@ -55,68 +67,40 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end">
                     <div className='relative'>
-                        <div className='flex flex-row items-center gap-3'>
-                            {/* Dropdown btn */}
-                            <div
-                                onClick={() => setIsOpen(!isOpen)}
-                                className='p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition'
+                        {user ? (
+                            // Profile Picture and Dropdown
+                            <div className="flex items-center gap-2">
+                                <img
+                                    src={user.photoURL || '/default-avatar.png'}
+                                    alt="profile"
+                                    className="w-8 h-8 rounded-full cursor-pointer"
+                                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                                />
+                                {dropdownOpen && (
+                                    <ul className="absolute right-10 mt-36 bg-white text-black p-2 rounded shadow-md">
+                                        <li className="px-2 py-2 font-semibold">
+                                            {user.displayName || 'User'}
+                                        </li>
+                                        <li className="px-4 py-2 hover:bg-gray-200">
+                                            <Link to="/dashboard">Dashboard</Link>
+                                        </li>
+                                        <li
+                                            className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                                            onClick={handleLogout}
+                                        >
+                                            Logout
+                                        </li>
+                                    </ul>
+                                )}
+                            </div>
+                        ) : (
+                            // Join Us Button (If Not Logged In)
+                            <Link
+                                to="/join-us"
+                                className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600"
                             >
-                                <div className='hidden md:block'>
-                                    {/* Avatar */}
-                                    <img
-                                        className='rounded-full'
-                                        referrerPolicy='no-referrer'
-                                        src={user && user.photoURL ? user.photoURL : avatarImg}
-                                        alt='profile'
-                                        height='30'
-                                        width='30'
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        {isOpen && (
-                            <div className='absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm z-50'>
-                                <div className='flex flex-col cursor-pointer'>
-                                    <Link
-                                        to='/'
-                                        className='block md:hidden px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                                    >
-                                        Home
-                                    </Link>
-
-                                    {user ? (
-                                        <>
-                                            <Link
-                                                to='/dashboard/profile'
-                                                className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                                            >
-                                                Dashboard
-                                            </Link>
-                                            <div
-                                                onClick={handleLogout}
-                                                className='px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer'
-                                            >
-                                                Logout
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Link
-                                                to='/signin'
-                                                className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                                            >
-                                                Login
-                                            </Link>
-                                            <Link
-                                                to='/signup'
-                                                className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
-                                            >
-                                                Sign Up
-                                            </Link>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
+                                Join Us
+                            </Link>
                         )}
                     </div>
                 </div>
@@ -126,3 +110,86 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+// import React, { useState } from 'react';
+// import { Link } from 'react-router-dom';
+// import { FaBell } from 'react-icons/fa';
+// import useAuth from '../../hooks/useAuth';
+
+// const Navbar = () => {
+//     const { user, logout } = useAuth;
+//     const [dropdownOpen, setDropdownOpen] = useState(false);
+//     // Logout Handler
+//     const handleLogout = () => {
+//         logout();
+//     };
+
+//     return (
+//         <nav className="bg-gray-800 text-white py-4">
+//             <div className="w-11/12 mx-auto flex justify-between items-center px-6">
+//                 {/* Logo */}
+//                 <Link to="/" className="text-2xl font-bold hover:text-blue-400">
+//                     <span className="text-blue-500">HOSTEL MANAGEMENT</span>
+//                 </Link>
+
+//                 {/* Navigation Links */}
+//                 <ul className="flex items-center gap-6">
+//                     <li><Link to="/" className="hover:text-blue-400">Home</Link></li>
+//                     <li><Link to="/meals" className="hover:text-blue-400">Meals</Link></li>
+//                     <li><Link to="/upcoming-meals" className="hover:text-blue-400">Upcoming Meals</Link></li>
+//                     <li>
+//                         {/* Notification Icon */}
+//                         <button className="relative">
+//                             <FaBell className="text-2xl" />
+//                             {/* Optional: Notification Count */}
+//                             <span className="absolute -top-1 -right-2 bg-red-500 text-xs rounded-full w-4 h-4 flex items-center justify-center">
+//                                 3
+//                             </span>
+//                         </button>
+//                     </li>
+
+//                     {/* Authentication Section */}
+//                     <li className="relative">
+//                         {user ? (
+//                             // Profile Picture and Dropdown
+//                             <div className="flex items-center gap-2">
+//                                 <img
+//                                     src={user.photoURL || '/default-avatar.png'}
+//                                     alt="profile"
+//                                     className="w-8 h-8 rounded-full cursor-pointer"
+//                                     onClick={() => setDropdownOpen(!dropdownOpen)}
+//                                 />
+//                                 {dropdownOpen && (
+//                                     <ul className="absolute right-0 mt-2 bg-white text-black p-2 rounded shadow-md">
+//                                         <li className="px-4 py-2 font-semibold">
+//                                             Username: {user.displayName || 'User'}
+//                                         </li>
+//                                         <li className="px-4 py-2 hover:bg-gray-200">
+//                                             <Link to="/dashboard">Dashboard</Link>
+//                                         </li>
+//                                         <li
+//                                             className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+//                                             onClick={handleLogout}
+//                                         >
+//                                             Logout
+//                                         </li>
+//                                     </ul>
+//                                 )}
+//                             </div>
+//                         ) : (
+//                             // Join Us Button (If Not Logged In)
+//                             <Link
+//                                 to="/join-us"
+//                                 className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600"
+//                             >
+//                                 Join Us
+//                             </Link>
+//                         )}
+//                     </li>
+//                 </ul>
+//             </div>
+//         </nav>
+//     );
+// };
+
+// export default Navbar;
