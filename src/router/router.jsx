@@ -22,6 +22,7 @@ import Payment from "../Pages/MyDashboard/Payment";
 import JoinUs from "../Pages/JoinUs/JoinUs";
 import Meal from "../Pages/Meal/Meal";
 import UpCommingMeal from "../Pages/UpCommingMeal/UpCommingMeal";
+import CheckOut from "../Pages/CheckOut.jsx/CheckOut";
 
 const router = createBrowserRouter([
     {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
             {
                 path: 'meal',
                 element: <Meal></Meal>
+            },
+            {
+                path: 'checkout/:packageName',
+                element: <CheckOut></CheckOut>
             },
             {
                 path: 'upcoming-meals',

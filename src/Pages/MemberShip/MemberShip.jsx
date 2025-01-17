@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 const Membership = () => {
     const axiosSecure = useAxiosSecure()
+    const navigate = useNavigate()
 
-    // useEffect(() => {
-    //     fetch('membership.json')
-    //     .then(res => res.json())
-    //     .then(data => setMenu(data))
-    // })
-
-    // Fetch membership data using useQuery
     const { data: menu = [], isLoading } = useQuery({
         queryKey: ['packages'],
         queryFn: async() => {
@@ -42,7 +37,7 @@ const Membership = () => {
                                 </li>
                             ))}
                         </ul>
-                        <button className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                        <button onClick={() => navigate(`/checkout/${pkg.name}`)} className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
                             Choose {pkg.name}
                         </button>
                     </div>
