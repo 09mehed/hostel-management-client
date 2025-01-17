@@ -14,61 +14,61 @@ const CheckOutForm = ({packageDetails}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!stripe || !elements) return;
+        console.log('one');
+        // if (!stripe || !elements) return;
 
-        const card = elements.getElement(CardElement);
+        // const card = elements.getElement(CardElement);
+        // console.log('two');
+        // if(card === null){
+        //     return
+        // }
+        // console.log('card element', card);
+        // const { error, paymentMethod } = await stripe.createPaymentMethod({
+        //     type: 'card',
+        //     card,
+        // });
 
-        if(card === null){
-            return
-        }
+        // if (error) {
+        //     setError(error.message);
+        //     return;
+        // }else{
+        //     console.log('Payment Method', paymentMethod);
+        // }
 
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
-            type: 'card',
-            card,
-        });
+        // // const { id } = paymentMethod;
 
-        if (error) {
-            setError(error.message);
-            return;
-        }else{
-            console.log('Payment Method', paymentMethod);
-        }
-
-        // const { id } = paymentMethod;
-
-        const { data } = await axiosSecure.post('/create-payment-intent', {
-            price: packageDetails.price
-        });
-        setClientSecret(data.clientSecret)
-            
-
+        // const { data } = await axiosSecure.post('/create-payment-intent', {
+        //     price: packageDetails.price
+        // });
+        // console.log(data);
+        // setClientSecret(data.clientSecret)
         // if (data.success) {
         //     setSuccess('Payment successful!');
         //     // Save payment to database
-        //     await axiosSecure.post('/save-payment', {
-        //         packageName: packageDetails.name,
-        //         paymentId: data.paymentId,
-        //         amount: packageDetails.price,
-        //     });
+        //     // await axiosSecure.post('/save-payment', {
+        //     //     packageName: packageDetails.name,
+        //     //     paymentId: data.paymentId,
+        //     //     amount: packageDetails.price,
+        //     // });
         // } else {
         //     setError('Payment failed. Please try again.');
         // }
 
-        const {paymentIntent, error: confirmError} = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: card,
-                billing_details: {
-                    email: user?.email || 'anonymous',
-                    name: user?.displayName || 'anonymous'
-                }
-            }
-        })
+        // const {paymentIntent, error: confirmError} = await stripe.confirmCardPayment(clientSecret, {
+        //     payment_method: {
+        //         card: card,
+        //         billing_details: {
+        //             email: user?.email || 'anonymous',
+        //             name: user?.displayName || 'anonymous'
+        //         }
+        //     }
+        // })
 
-        if(confirmError){
-            console.log('confirm error');
-        }else{
-            console.log('payment intent', paymentIntent);
-        }
+        // if(confirmError){
+        //     console.log('confirm error');
+        // }else{
+        //     console.log('payment intent', paymentIntent);
+        // }
     };
     return (
         <form onSubmit={handleSubmit}>
@@ -78,7 +78,7 @@ const CheckOutForm = ({packageDetails}) => {
                 className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
                 disabled={!stripe || !clientSecret}
             >
-                Pay {packageDetails.price}
+                Pay ${packageDetails.price}
             </button>
             {error && <p className="text-red-500 mt-4">{error}</p>}
             {success && <p className="text-green-500 mt-4">{success}</p>}

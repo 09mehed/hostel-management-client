@@ -11,6 +11,7 @@ const MealDetail = () => {
     const { user } = useAuth()
     const [reviews, setReviews] = useState([]);
     const [newReview, setNewReview] = useState('');
+    const [currentReviewCount, setCurrentReviewCount] = useState(review_count);
     const [isLiked, setIsLiked] = useState(false);
     const axiosSecure = useAxiosSecure();
     const { likeCount, incrementLike } = useContext(LikeContext);
@@ -27,9 +28,16 @@ const MealDetail = () => {
         status: 'Pending'
     })
 
-    
-    const handleLike = (_id) => {
-        if (isLiked || !user) {
+    useEffect(() => {
+        axiosSecure.get(`/meal/like/${_id}`)
+            .then((response) => {
+                setIsLiked(response.data.liked);
+            })
+            .catch((err) => console.error("Error checking like status:", err));
+    }, [_id, axiosSecure]);
+
+    const handleLike = async (_id) => {
+        if (!user) {
             return Swal.fire({
                 icon: "warning",
                 title: "Login Required",
@@ -37,27 +45,45 @@ const MealDetail = () => {
             });
         }
 
-        axiosSecure.get(`/meal/like/${_id}`)
-            .then(() => {
-                setIsLiked(true); // Disable like button
-                incrementLike(); // Update like count in context
+        try {
+            // Check if the user has already liked this meal
+            const { data: likedStatus } = await axiosSecure.get(`/meal/like/${_id}`);
+            if (likedStatus.liked) {
+                return Swal.fire({
+                    icon: "warning",
+                    title: "Already Liked",
+                    text: "You have already liked this meal.",
+                });
+            }
+
+            // Send a PATCH request to increment the like count
+            const response = await axiosSecure.patch(`/meal/like/${_id}`, { userId: user?.uid });
+
+            if (response.data.success) {
+                // Update the UI locally
+                setIsLiked(true);
+                incrementLike(); // Update global like count in context if required
                 Swal.fire({
                     icon: "success",
                     title: "Liked!",
                     text: "You have liked this meal.",
                 });
-            })
-            .catch(err => {
-                console.error(err);
+            } else {
                 Swal.fire({
                     icon: "error",
                     title: "Error",
-                    text: "Something went wrong while liking the meal.",
+                    text: response.data.message || "Could not like the meal.",
                 });
+            }
+        } catch (error) {
+            console.error("Error liking the meal:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Something went wrong while liking the meal.",
             });
+        }
     };
-
-
     const handleRequestMeal = async () => {
         try {
             await axiosSecure.post('/request', requestInfo)
@@ -76,21 +102,41 @@ const MealDetail = () => {
 
     };
 
+
+    useEffect(() => {
+        axiosSecure.get(`/meal/reviews/${_id}`)
+            .then((response) => {
+                setReviews(response.data.reviews);
+                setCurrentReviewCount(response.data.reviews_count);
+            })
+            .catch((err) => console.error("Error fetching reviews:", err));
+    }, [_id, axiosSecure]);
+
     const handleSubmitReview = (e) => {
         e.preventDefault();
         if (!newReview.trim()) return;
 
-        const mealInfo = {
-            mealId: title,
-            review: newReview
-        }
+        const reviewData = { reviewText: newReview };
 
-        axiosSecure.post('/add-review', mealInfo)
+        axiosSecure.post(`/meal/review/${_id}`, reviewData)
             .then(() => {
                 setReviews([...reviews, newReview]);
                 setNewReview('');
+                setCurrentReviewCount(currentReviewCount + 1);
+                Swal.fire({
+                    icon: "success",
+                    title: "Review Added!",
+                    text: "Your review has been added successfully.",
+                });
             })
-            .catch(err => console.error(err));
+            .catch((err) => {
+                console.error("Error adding review:", err);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Something went wrong while adding your review.",
+                });
+            });
     };
 
     return (
