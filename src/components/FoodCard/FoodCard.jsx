@@ -6,13 +6,15 @@ const FoodCard = ({ item }) => {
     return (
         <div>
             <div className="card bg-base-100 shadow-xl pt-5">
-                <figure>
-                    <img
-                        src={image}
-                        alt="Shoes"
-                        className='h-48 w-full' />
-                </figure>
-                <div className="py-3 ">
+                <div className=''>
+                    <figure>
+                        <img
+                            src={image}
+                            alt="Shoes"
+                            className='h-48 w-full' />
+                    </figure>
+                </div>
+                <div className="py-3 card-body">
                     <h2 className="card-title">{title}</h2>
                     <div className='flex justify-between items-center'>
                         <p>Rating: {rating}</p>

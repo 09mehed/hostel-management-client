@@ -5,24 +5,34 @@ const Meal = () => {
     const [meals, setMeals] = useState([]);
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('');
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(Infinity);
+    const [price, setPrice] = useState('');
     const axiosSecure = useAxiosSecure()
 
     // Fetch meals from the server with applied filters
     const fetchMeals = async () => {
         try {
-            const data = await axiosSecure.get(`/meal?search=${search}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}`);
-            setMeals(data);
+          const queryString = new URLSearchParams({
+            search: search || '',  
+            category: category || '', 
+            price: price || '',  
+          }).toString();
+    
+          const res = await axiosSecure.get(`/meal?${queryString}`);
+          setMeals(res.data);
         } catch (error) {
-            console.error('Error fetching meals:', error);
+          console.error('Error fetching meals:', error);
         }
-    };
-
-    // Call fetchMeals when any filter changes
-    useEffect(() => {
+      };
+    
+      // Call fetchMeals when any filter changes
+      useEffect(() => {
         fetchMeals();
-    }, [search, category, minPrice, maxPrice]);
+      }, [search, category, price]);    
+
+    // Handle price input change
+    const handlePriceChange = (e) => {
+        setPrice(parseFloat(e.target.value) || 0);  // Convert to number
+    };
 
     return (
         <div className="w-11/12 mx-auto ">
@@ -49,47 +59,37 @@ const Meal = () => {
                         {/* Add more categories here */}
                     </select>
                 </div>
-            </div>
-
-
-
-            {/* Price Range Filter */}
-            <div className='flex justify-between gap-3'>
                 <div className='w-1/2'>
                     <input
                         type="number"
-                        placeholder="Min Price"
-                        value={minPrice}
-                        onChange={(e) => setMinPrice(e.target.value)} // Set minimum price
-                        className='w-full p-2' 
-                    />
-                </div>
-                <div className='w-1/2'>
-                    <input
-                        type="number"
-                        placeholder="Max Price"
-                        value={maxPrice}
-                        onChange={(e) => setMaxPrice(e.target.value)} // Set maximum price
-                        className='w-full py-2 px-2' 
+                        placeholder="Price"
+                        value={price}
+                        onChange={handlePriceChange} // Set minimum price
+                        className='w-full p-2'
                     />
                 </div>
             </div>
 
             {/* Display Meals */}
-            <div className="meal-list">
-                {meals.length > 0 ? (
-                    meals.map((meal) => (
-                        <div key={meal._id} className="meal-card">
-                            <h3>{meal.name}</h3>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 py-3'>
+                {meals.map((meal) => (
+                    <div key={meal._id} className="card bg-base-100 shadow-xl">
+                        <figure className="px-10 pt-10">
+                            <img
+                                src={meal.image}
+                                alt={meal.title}
+                                className="rounded-xl w-full h-44"
+                            />
+                        </figure>
+                        <div className="card-body">
+                            <h2 className="card-title">{meal.title}</h2>
+                            <h2 className="card-title">{meal.category}</h2>
                             <p>{meal.description}</p>
-                            <p>Price: ${meal.price}</p>
-                            <p>Category: {meal.category}</p>
                         </div>
-                    ))
-                ) : (
-                    <p>No meals found.</p>
-                )}
+                    </div>
+                ))}
             </div>
+
         </div>
     );
 };
