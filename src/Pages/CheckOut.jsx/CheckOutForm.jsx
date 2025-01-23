@@ -15,18 +15,18 @@ const CheckOutForm = ({packageDetails}) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log('one');
-        // if (!stripe || !elements) return;
+        if (!stripe || !elements) return;
 
-        // const card = elements.getElement(CardElement);
-        // console.log('two');
-        // if(card === null){
-        //     return
-        // }
-        // console.log('card element', card);
-        // const { error, paymentMethod } = await stripe.createPaymentMethod({
-        //     type: 'card',
-        //     card,
-        // });
+        const card = elements.getElement(CardElement);
+        console.log('two');
+        if(card === null){
+            return
+        }
+        console.log('card element', card);
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
+            type: 'card',
+            card,
+        });
 
         // if (error) {
         //     setError(error.message);

@@ -23,6 +23,8 @@ import JoinUs from "../Pages/JoinUs/JoinUs";
 import Meal from "../Pages/Meal/Meal";
 import UpCommingMeal from "../Pages/UpCommingMeal/UpCommingMeal";
 import CheckOut from "../Pages/CheckOut.jsx/CheckOut";
+import AllReview from "../Pages/AdminDashboard/AllReview.jsx/AllReview";
+import SarveMeal from "../Pages/AdminDashboard/SarveMeal/SarveMeal";
 
 const router = createBrowserRouter([
     {
@@ -100,6 +102,18 @@ const router = createBrowserRouter([
             {
                 path: 'adminProfile',
                 element: <AdminRoute><AddProfile></AddProfile></AdminRoute>
+            },
+            {
+                path: 'allReview',
+                element: <AdminRoute><AllReview></AllReview></AdminRoute>
+            },
+            {
+                path: 'serve',
+                element: <AdminRoute><SarveMeal></SarveMeal></AdminRoute>
+            },
+            {
+                path: 'upcoming',
+                element: <AdminRoute></AdminRoute>
             },
             {
                 path: 'updateItems/:id',

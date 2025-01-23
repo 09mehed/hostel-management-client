@@ -31,10 +31,10 @@ const Dashboard = () => {
                                 <NavLink to='/dashboard/allReview'> <MdOutlineRateReview /> All Reviews</NavLink>
                             </li>
                             <li className='text-xl'>
-                                <NavLink to='/dashboard/allReview'> <FaServer></FaServer> Serve Meals</NavLink>
+                                <NavLink to='/dashboard/serve'> <FaServer></FaServer> Serve Meals</NavLink>
                             </li>
                             <li className='text-xl'>
-                                <NavLink to='/dashboard/allReview'> <MdUpcoming /> Upcoming Meals</NavLink>
+                                <NavLink to='/dashboard/upcoming'> <MdUpcoming /> Upcoming Meals</NavLink>
                             </li>
                         </>
                             : <>

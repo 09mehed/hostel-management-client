@@ -11,23 +11,18 @@ const Meal = () => {
     // Fetch meals from the server with applied filters
     const fetchMeals = async () => {
         try {
-          const queryString = new URLSearchParams({
-            search: search || '',  
-            category: category || '', 
-            price: price || '',  
-          }).toString();
-    
-          const res = await axiosSecure.get(`/meal?${queryString}`);
-          setMeals(res.data);
+            const res = await axiosSecure.get(`/meal?search=${search}&category=${category}&price=${price}`);
+            console.log('Fetched Meals:', res.data); // Debugging
+            setMeals(res.data);
         } catch (error) {
-          console.error('Error fetching meals:', error);
+            console.error('Error fetching meals:', error);
         }
-      };
-    
-      // Call fetchMeals when any filter changes
-      useEffect(() => {
+    };
+
+    // Call fetchMeals when any filter changes
+    useEffect(() => {
         fetchMeals();
-      }, [search, category, price]);    
+    }, [search, category, price]);
 
     // Handle price input change
     const handlePriceChange = (e) => {
