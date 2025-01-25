@@ -28,7 +28,7 @@ const CheckOut = () => {
             <h2 className="text-3xl font-bold text-center mb-8">Checkout</h2>
             <div className="p-6 rounded-lg shadow-md bg-gray-100">
                 <h3 className="text-2xl font-bold mb-4">{packageDetails.name}</h3>
-                <p className="text-xl mb-6">Price: ${packageDetails.price}</p>
+                <p className="text-xl mb-6">Price: {packageDetails.price}</p>
                 <Elements stripe={stripePromise}>
                     <CheckOutForm packageDetails={packageDetails} />
                 </Elements>
