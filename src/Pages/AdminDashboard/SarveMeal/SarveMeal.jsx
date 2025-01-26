@@ -18,24 +18,25 @@ const SarveMeal = () => {
     })
 
     
-    const handleStatusChange = async (id, prevStatus, serviceStatus) => {
-        if(prevStatus === serviceStatus || prevStatus === 'Complete'){
-            return console.log("Not Allow");
-        }
+    // const handleStatusChange = async (id, prevStatus, serviceStatus) => {
+    //     if(prevStatus === serviceStatus || prevStatus === 'Complete'){
+    //         return console.log("Not Allow");
+    //     }
 
-        try{
-            const {data} = await axiosSecure.patch(`/service-status-update/${id}`, {serviceStatus})
-            console.log(data);
-            fetchBookedService()
-        }catch(err){
-            console.log(err.message);
-        }
-    }
+    //     try{
+    //         const {data} = await axiosSecure.patch(`/service-status-update/${id}`, {serviceStatus})
+    //         console.log(data);
+    //         fetchBookedService()
+    //     }catch(err){
+    //         console.log(err.message);
+    //     }
+    // }
 
     const serveMeal = async (mealId) => {
         try {
-            await axiosSecure.post(`/request/status/${mealId}`);
-            refetch();  // Refresh the meals list
+            const res = await axiosSecure.patch(`/request/status/${mealId}`, { status: 'Delivered' });
+            refetch();
+            console.log(res.data);
         } catch (error) {
             console.error('Error serving meal:', error);
         }
