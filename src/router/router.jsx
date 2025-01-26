@@ -38,7 +38,7 @@ const router = createBrowserRouter([
             {
                 path: 'mealDetails/:id',
                 element: <PrivateRoute><MealDetail></MealDetail></PrivateRoute>,
-                loader: ({ params }) => fetch(`http://localhost:5000/meal/${params.id}`),
+                loader: ({ params }) => fetch(`https://assignment-12-ashen.vercel.app/meal/${params.id}`),
             },
             {
                 path: 'meal',
@@ -118,7 +118,7 @@ const router = createBrowserRouter([
             {
                 path: 'updateItems/:id',
                 element: <AdminRoute><UpdateItems></UpdateItems></AdminRoute>,
-                loader: ({params}) => fetch(`http://localhost:5000/meal/${params.id}`)
+                loader: ({params}) => fetch(`https://assignment-12-ashen.vercel.app/meal/${params.id}`)
             },
         ]
     }
