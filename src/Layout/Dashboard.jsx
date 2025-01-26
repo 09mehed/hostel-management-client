@@ -8,6 +8,7 @@ import useAdmin from '../hooks/useAdmin';
 const Dashboard = () => {
 
     const [isAdmin] = useAdmin()
+    console.log(isAdmin);
 
     return (
         <div className='flex w-11/12 mx-auto'>

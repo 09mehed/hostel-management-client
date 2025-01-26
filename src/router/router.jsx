@@ -67,7 +67,7 @@ const router = createBrowserRouter([
         ]
     },
     {
-        path: 'dashboard',
+        path: '/dashboard',
         element: <Dashboard></Dashboard>,
         children: [
             {
@@ -113,7 +113,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'upcoming',
-                element: <AdminRoute></AdminRoute>
+                element: <AdminRoute><UpCommingMeal></UpCommingMeal></AdminRoute>
             },
             {
                 path: 'updateItems/:id',

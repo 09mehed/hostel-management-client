@@ -25,7 +25,6 @@ const RequestMeal = () => {
             <div className='flex justify-evenly pt-5'>
                 <h2 className='text-3xl'>Request Meal: {food.length}</h2>
                 <h2 className='text-3xl'>TotalPrice: {totalPrice}</h2>
-                <button className='btn btn-primary'>Pay</button>
             </div>
             <div className="overflow-x-auto">
                 <table className="table">

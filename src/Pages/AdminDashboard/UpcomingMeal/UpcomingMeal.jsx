@@ -21,6 +21,7 @@ const UpcomingMeal = () => {
   return (
     <div>
       <h1>Upcoming Meals</h1>
+      <button className='btn btn-link'>Upcoming Meal</button>
       <ul>
         {upcomingMeals.map((meal) => (
           <li key={meal._id}>
