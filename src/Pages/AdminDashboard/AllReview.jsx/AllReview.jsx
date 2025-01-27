@@ -66,7 +66,6 @@ const AllReview = () => {
                         <thead>
                             <tr className="bg-gray-100 text-left">
                                 <th className="border border-gray-300 px-4 py-2">Meal Title</th>
-                                <th className="border border-gray-300 px-4 py-2">Likes</th>
                                 <th className="border border-gray-300 px-4 py-2">Reviews Count</th>
                                 <th className="border border-gray-300 px-4 py-2">Actions</th>
                             </tr>
@@ -75,7 +74,6 @@ const AllReview = () => {
                             {reviews.map((review) => (
                                 <tr key={review._id} className="hover:bg-gray-50">
                                     <td className="border border-gray-300 px-4 py-2">{review.title}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{review.likes}</td>
                                     <td className="border border-gray-300 px-4 py-2">{review.reviews_count}</td>
                                     <td className="border border-gray-300 px-4 py-2">
                                         <button

@@ -45,15 +45,15 @@ const RequestMeal = () => {
                             food.map((item, index) => <tr key={item._id}>
                                 <th>{index + 1}</th>
                                 <td>{item.title}</td>
-                                <td></td>
-                                <td>Blue</td>
+                                <td>{item.likes || 0}</td>
+                                <td>{item.reviews_count || 0}</td>
                                 <td>{item.status}</td>
                                 <td>
                                     <button className='btn btn-primary'>Cancel</button>
                                 </td>
                             </tr>)
                         }
-                        
+
                     </tbody>
                 </table>
             </div>

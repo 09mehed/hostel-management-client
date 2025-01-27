@@ -6,29 +6,29 @@ import { Link } from 'react-router-dom';
 
 
 const AllMeals = () => {
-  const [meal, , refetch] = useMenu();
+  const [, , refetch] = useMenu();
+  const [meal, setMeal] = useState([]);
   const [sortField, setSortField] = useState('likes');
   const [sortOrder, setSortOrder] = useState('desc');
   const axiosSecure = useAxiosSecure()
 
-  // Fetch meals with sorting
-  // const fetchMeals = async () => {
-  //   try {
-  //     const response = await axiosSecure.get('/meal');
-  //     setMeals(response.data)
-  //   } catch (error) {
-  //     console.error('Error fetching meals:', error);
-  //   }
-  // };
+  const handleSort = (field) => {
+    setSortField(field);
+    setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
+  };
 
-  // useEffect(() => {
-  //   fetchMeals();
-  // }, [sortField, sortOrder]);
+  useEffect(() => {
+    const fetchSortedMeals = async () => {
+      try {
+        const { data } = await axiosSecure.get(`/meals?sortField=${sortField}&sortOrder=${sortOrder}`);
+        setMeal(data);
+      } catch (error) {
+        console.error("Error fetching sorted meals:", error);
+      }
+    };
 
-  // const handleSort = (field) => {
-  //   setSortField(field);
-  //   setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-  // };
+    fetchSortedMeals();
+  }, [sortField, sortOrder, axiosSecure]);
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -64,13 +64,13 @@ const AllMeals = () => {
           onClick={() => handleSort('likes')}
           className="bg-blue-500 text-white px-4 py-2 rounded"
         >
-          Sort by Likes ({sortOrder === 'asc' ? 'Asc' : 'Desc'})
+          Likes দিয়ে সোর্ট ({sortOrder === 'asc' ? 'ASC' : 'DESC'})
         </button>
         <button
           onClick={() => handleSort('reviews_count')}
           className="bg-green-500 text-white px-4 py-2 rounded"
         >
-          Sort by Reviews ({sortOrder === 'asc' ? 'Asc' : 'Desc'})
+          Reviews দিয়ে সোর্ট ({sortOrder === 'asc' ? 'ASC' : 'DESC'})
         </button>
       </div>
       <table className="table-auto w-full border-collapse border border-gray-300">
