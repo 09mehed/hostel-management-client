@@ -35,7 +35,7 @@ const AllReview = () => {
         const confirm = window.confirm('Are you sure you want to delete this review?');
         if (confirm) {
             try {
-                await axios.delete(`/reviews/${id}`); // Replace with your DELETE API endpoint
+                await axiosSecure.delete(`/reviews/${id}`); // Replace with your DELETE API endpoint
                 setReviews((prevReviews) => prevReviews.filter((review) => review._id !== id)); // Update the UI
                 alert('Review deleted successfully!');
             } catch (error) {

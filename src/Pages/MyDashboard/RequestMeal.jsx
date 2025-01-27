@@ -1,7 +1,8 @@
 import React from 'react';
 import useAuth from '../../hooks/useAuth';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
 const RequestMeal = () => {
     const axiosSecure = useAxiosSecure()
@@ -15,6 +16,34 @@ const RequestMeal = () => {
     })
 
     const totalPrice = food.reduce((total, item) => total + item.price, 0)
+
+    const mutation = useMutation({
+        mutationFn: (mealId) => axiosSecure.delete(`/student-order/${mealId}`).then(e=>{refetch(), console.log(mealId)}), 
+        onSuccess: () => {
+            
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: 'Meal Cancelled Successfully',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        },
+        onError: (error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || 'An error occurred while canceling the meal.',
+            });
+        }
+    });
+
+    const handleCancel = (mealId) => {
+        mutation.mutate(mealId);
+            console.log(mealId);
+
+        
+    };
 
     if (isLoading) {
         return <h2>Loading....</h2>
@@ -49,7 +78,12 @@ const RequestMeal = () => {
                                 <td>{item.reviews_count || 0}</td>
                                 <td>{item.status}</td>
                                 <td>
-                                    <button className='btn btn-primary'>Cancel</button>
+                                    <button
+                                        className='btn btn-primary'
+                                        onClick={() => handleCancel(item._id)}
+                                    >
+                                        Cancel
+                                    </button>
                                 </td>
                             </tr>)
                         }

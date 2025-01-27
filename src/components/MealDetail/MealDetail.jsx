@@ -62,7 +62,8 @@ const MealDetail = () => {
             if (response.data.success) {
                 // Update the UI locally
                 setIsLiked(true);
-                incrementLike(); // Update global like count in context if required
+                incrementLike();
+                
                 Swal.fire({
                     icon: "success",
                     title: "Liked!",

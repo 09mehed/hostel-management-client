@@ -25,7 +25,7 @@ const Membership = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {menu.map((pkg) => (
                     <div
-                        key={pkg.name}
+                        key={pkg._id}
                         className={`p-6 rounded-lg shadow-md ${pkg.bgColor}`}
                     >
                         <h3 className="text-2xl font-bold mb-4">{pkg.name}</h3>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
@@ -14,7 +14,7 @@ const UpdateItems = () => {
     const axiosSecure = useAxiosSecure()
     const item = useLoaderData() 
     const {user} = useAuth()
-    console.log(item);
+    const navigate = useNavigate()
 
     const onSubmit = async (data) => {
             try {
@@ -55,6 +55,7 @@ const UpdateItems = () => {
                             timer: 1500
                           });
                         reset();
+                        navigate('/dashboard/allMeal')
                     }
                 }
             } catch (error) {
@@ -71,7 +72,7 @@ const UpdateItems = () => {
                 <label className="block mb-2">Title</label>
                 <input
                     type="text"
-                    
+                    defaultValue={item.title}
                     {...register('title', { required: true })}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
                 />
@@ -80,7 +81,7 @@ const UpdateItems = () => {
                 <label className="block mb-2">Category</label>
                 <input
                     type="text"
-                    
+                    defaultValue={item.category}
                     {...register('category', { required: true })}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
                 />
@@ -97,14 +98,14 @@ const UpdateItems = () => {
                 <label className="block mb-2">Ingredients (comma-separated)</label>
                 <input
                     type="text"
-                    // defaultValue={ingredients}
+                    defaultValue={item.ingredients}
                     {...register('ingredients', { required: true })}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
                 />
 
                 {/* Description */}
                 <label className="block mb-2">Description</label>
-                <textarea 
+                <textarea defaultValue={item.description}
                     {...register('description', { required: true })}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
                 ></textarea>
@@ -113,7 +114,7 @@ const UpdateItems = () => {
                 <label className="block mb-2">Price</label>
                 <input
                     type="number"
-                    // defaultValue={price}
+                    defaultValue={item.price}
                     step="0.01"
                     {...register('price', { required: true })}
                     className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"

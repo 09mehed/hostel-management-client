@@ -23,7 +23,8 @@ const SignUp = () => {
       const userInfo = {
         name: name,
         email: email,
-        photoURL
+        photoURL,
+        badge: 'bronze'
       }
       axiosPublic.post('/users', userInfo)
         .then(res => {
