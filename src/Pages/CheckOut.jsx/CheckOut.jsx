@@ -8,7 +8,8 @@ import { Elements } from '@stripe/react-stripe-js';
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 
 const CheckOut = () => {
-    const {packageName } = useParams()
+    const { packageName } = useParams()
+    console.log(packageName);
     const axiosSecure = useAxiosSecure();
     const [packageDetails, setPackageDetails] = useState(null);
 
@@ -17,6 +18,7 @@ const CheckOut = () => {
         .then((res) => {
             setPackageDetails(res.data);
         });
+        console.log(packageName);
     }, [packageName, axiosSecure]);
 
     if (!packageDetails) {

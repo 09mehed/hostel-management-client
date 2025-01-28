@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import ReactPaginate from 'react-paginate';
 
 const Meal = () => {
     const [meals, setMeals] = useState([]);
@@ -8,9 +9,9 @@ const Meal = () => {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const axiosSecure = useAxiosSecure();
-    const [currentPage, setCurrentPage] = useState(10);
-    const [totalPages, setTotalPages] = useState(10);
-    const itemsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 9;
+
 
     // Fetch meals from the server
     const fetchMeals = async () => {
@@ -19,9 +20,9 @@ const Meal = () => {
                 `/meal?search=${search}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}`
             );
 
-            setMeals(res.data.meals || res.data);
-            setTotalPages(Math.ceil((res.data.total || res.data.length) / itemsPerPage));
-            
+            setMeals(res.data);
+            // setTotalPages(Math.ceil((res.data.total || res.data.length) / itemsPerPage));
+
         } catch (error) {
             console.error('Error fetching meals:', error);
         }
@@ -30,14 +31,17 @@ const Meal = () => {
     // Fetch meals on filter change
     useEffect(() => {
         fetchMeals();
-    }, [search, category, minPrice, maxPrice, currentPage]);
+    }, [search, category, minPrice, maxPrice]);
 
-    const handlePageChange = e => {
-        console.log(e.target.value);
-        // if (page > 0 && page <= totalPages) {
-        //     setCurrentPage(page);
-        // }
+
+    const handlePageClick = ({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
     };
+
+
+    const offset = currentPage * itemsPerPage;
+    const currentPageData = meals.slice(offset, offset + itemsPerPage);
+    const pageCount = Math.ceil(meals.length / itemsPerPage);
 
     return (
         <div className="w-11/12 mx-auto">
@@ -69,11 +73,18 @@ const Meal = () => {
                     onChange={(e) => setMinPrice(e.target.value)}
                     className="w-1/6 py-2 text-center border rounded"
                 />
+                <input
+                    type="number"
+                    placeholder="Max Price"
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                    className="w-1/6 py-2 text-center border rounded"
+                />
             </div>
 
             {/* Display Meals */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 py-3">
-                {meals.map((meal) => (
+                {currentPageData.map((meal) => (
                     <div key={meal._id} className="card bg-base-100 shadow-xl">
                         <figure className="px-10 pt-10">
                             <img
@@ -93,30 +104,18 @@ const Meal = () => {
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-center items-center gap-2 py-4">
-                <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-                >
-                    Previous
-                </button>
-                {Array.from({ length: totalPages }, (_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => handlePageChange(index + 1)}
-                        className={`px-4 py-2 rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
-                <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-                >
-                    Next
-                </button>
+            <div className="flex justify-center items-center py-4">
+                <ReactPaginate
+                    previousLabel={"Previous"}
+                    nextLabel={"Next"}
+                    pageCount={pageCount}
+                    onPageChange={handlePageClick}
+                    containerClassName={"flex items-center gap-2"}
+                    previousLinkClassName={"px-3 py-1 bg-gray-300 rounded"}
+                    nextLinkClassName={"px-3 py-1 bg-gray-300 rounded"}
+                    disabledClassName={"opacity-50"}
+                    activeClassName={"bg-blue-500 text-white rounded px-3 py-1"}
+                />
             </div>
         </div>
     );
