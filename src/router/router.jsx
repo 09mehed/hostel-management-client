@@ -45,7 +45,7 @@ const router = createBrowserRouter([
                 element: <Meal></Meal>
             },
             {
-                path: '/checkout/:packageName',
+                path: '/checkout/:membership',
                 element: <CheckOut></CheckOut>
             },
             {

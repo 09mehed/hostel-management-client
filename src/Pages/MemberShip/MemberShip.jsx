@@ -28,7 +28,7 @@ const Membership = () => {
                         key={pkg._id}
                         className={`p-6 rounded-lg shadow-md ${pkg.bgColor}`}
                     >
-                        <h3 className="text-2xl font-bold mb-4">{pkg.name}</h3>
+                        <h3 className="text-2xl font-bold mb-4">{pkg.membership}</h3>
                         <p className="text-4xl font-bold mb-6">{pkg.price}</p>
                         <ul className="mb-6">
                             {pkg.benefits.map((benefit, index) => (
@@ -37,8 +37,8 @@ const Membership = () => {
                                 </li>
                             ))}
                         </ul>
-                        <button onClick={() => navigate(`/checkout/${pkg.name}`)} className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-                            Choose {pkg.name}
+                        <button onClick={() => navigate(`/checkout/${pkg.membership}`)} className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                            Choose {pkg.membership}
                         </button>
                     </div>
                 ))}
