@@ -7,7 +7,6 @@ const Meal = () => {
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('');
     const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
     const axiosSecure = useAxiosSecure();
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 9;
@@ -17,31 +16,29 @@ const Meal = () => {
     const fetchMeals = async () => {
         try {
             const res = await axiosSecure.get(
-                `/meal?search=${search}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+                `/meal?search=${search}&category=${category}&minPrice=${minPrice}`
             );
-
+            console.log(res.data);
             setMeals(res.data);
-            // setTotalPages(Math.ceil((res.data.total || res.data.length) / itemsPerPage));
 
         } catch (error) {
             console.error('Error fetching meals:', error);
         }
     };
-
+    
     // Fetch meals on filter change
     useEffect(() => {
         fetchMeals();
-    }, [search, category, minPrice, maxPrice]);
+    }, [search, category, minPrice]);
 
 
-    const handlePageClick = ({ selected: selectedPage }) => {
-        setCurrentPage(selectedPage);
-    };
+    // const handlePageClick = ({ selected: selectedPage }) => {
+    //     setCurrentPage(selectedPage);
+    // };
 
-
-    const offset = currentPage * itemsPerPage;
-    const currentPageData = meals.slice(offset, offset + itemsPerPage);
-    const pageCount = Math.ceil(meals.length / itemsPerPage);
+    // const offset = currentPage * itemsPerPage;
+    // const currentPageData = meals.slice(offset, offset + itemsPerPage);
+    // const pageCount = Math.ceil(meals.length / itemsPerPage);
 
     return (
         <div className="w-11/12 mx-auto">
@@ -73,18 +70,11 @@ const Meal = () => {
                     onChange={(e) => setMinPrice(e.target.value)}
                     className="w-1/6 py-2 text-center border rounded"
                 />
-                <input
-                    type="number"
-                    placeholder="Max Price"
-                    value={maxPrice}
-                    onChange={(e) => setMaxPrice(e.target.value)}
-                    className="w-1/6 py-2 text-center border rounded"
-                />
             </div>
 
             {/* Display Meals */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 py-3">
-                {currentPageData.map((meal) => (
+                {meals.map((meal) => (
                     <div key={meal._id} className="card bg-base-100 shadow-xl">
                         <figure className="px-10 pt-10">
                             <img
@@ -104,7 +94,7 @@ const Meal = () => {
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-center items-center py-4">
+            {/* <div className="flex justify-center items-center py-4">
                 <ReactPaginate
                     previousLabel={"Previous"}
                     nextLabel={"Next"}
@@ -116,7 +106,7 @@ const Meal = () => {
                     disabledClassName={"opacity-50"}
                     activeClassName={"bg-blue-500 text-white rounded px-3 py-1"}
                 />
-            </div>
+            </div> */}
         </div>
     );
 };

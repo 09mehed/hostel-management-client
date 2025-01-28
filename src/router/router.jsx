@@ -49,10 +49,6 @@ const router = createBrowserRouter([
                 element: <CheckOut></CheckOut>
             },
             {
-                path: 'upcoming-meals',
-                element: <UpCommingMeal></UpCommingMeal>
-            },
-            {
                 path: 'join-us',
                 element: <JoinUs></JoinUs>
             },

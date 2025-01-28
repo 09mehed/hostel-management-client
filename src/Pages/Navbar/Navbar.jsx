@@ -17,17 +17,6 @@ const Navbar = () => {
     const links = <>
         <li><Link to="/" className="hover:text-blue-400">Home</Link></li>
         <li><Link to="/meal" className="hover:text-blue-400">Meals</Link></li>
-        <li><Link to="/upcoming-meals" className="hover:text-blue-400">Upcoming Meals</Link></li>
-        <li>
-            {/* Notification Icon */}
-            <button className="relative">
-                <FaBell className="text-2xl" />
-                {/* Optional: Notification Count */}
-                <span className="absolute -top-1 -right-2 bg-red-500 text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    {likeCount}
-                </span>
-            </button>
-        </li>
     </>
 
     return (
