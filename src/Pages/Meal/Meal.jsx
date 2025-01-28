@@ -16,7 +16,7 @@ const Meal = () => {
     const fetchMeals = async () => {
         try {
             const res = await axiosSecure.get(
-                `/meal?search=${search}&category=${category}&minPrice=${minPrice}`
+                `/searchMeal?search=${search}&category=${category}&minPrice=${minPrice}`
             );
             console.log(res.data);
             setMeals(res.data);
@@ -32,13 +32,13 @@ const Meal = () => {
     }, [search, category, minPrice]);
 
 
-    // const handlePageClick = ({ selected: selectedPage }) => {
-    //     setCurrentPage(selectedPage);
-    // };
+    const handlePageClick = ({ selected: selectedPage }) => {
+        setCurrentPage(selectedPage);
+    };
 
-    // const offset = currentPage * itemsPerPage;
-    // const currentPageData = meals.slice(offset, offset + itemsPerPage);
-    // const pageCount = Math.ceil(meals.length / itemsPerPage);
+    const offset = currentPage * itemsPerPage;
+    const currentPageData = meals.slice(offset, offset + itemsPerPage);
+    const pageCount = Math.ceil(meals.length / itemsPerPage);
 
     return (
         <div className="w-11/12 mx-auto">
@@ -74,7 +74,7 @@ const Meal = () => {
 
             {/* Display Meals */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 py-3">
-                {meals.map((meal) => (
+                {currentPageData.map((meal) => (
                     <div key={meal._id} className="card bg-base-100 shadow-xl">
                         <figure className="px-10 pt-10">
                             <img
@@ -94,7 +94,7 @@ const Meal = () => {
             </div>
 
             {/* Pagination */}
-            {/* <div className="flex justify-center items-center py-4">
+            <div className="flex justify-center items-center py-4">
                 <ReactPaginate
                     previousLabel={"Previous"}
                     nextLabel={"Next"}
@@ -106,7 +106,7 @@ const Meal = () => {
                     disabledClassName={"opacity-50"}
                     activeClassName={"bg-blue-500 text-white rounded px-3 py-1"}
                 />
-            </div> */}
+            </div>
         </div>
     );
 };
