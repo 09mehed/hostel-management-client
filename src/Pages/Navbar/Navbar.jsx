@@ -40,13 +40,13 @@ const Navbar = () => {
                         </div>
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content z-[1] mt-3 p-2 shadow">
+                            className="menu menu-sm dropdown-content bg-white shadow-lg border rounded w-40 absolute z-50 mt-2">
                             {links}
                         </ul>
                     </div>
                     <a className="btn btn-ghost text-xl">
                         <img className='w-8 h-8' src={logo} alt="" />
-                        Hostel Management
+                        <Link to='/' className='hidden lg:block'>Hostel Management</Link>
                     </a>
                 </div>
                 <div className="navbar-center hidden lg:flex">

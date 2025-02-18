@@ -1,7 +1,7 @@
 import React from 'react';
-import { FaAddressBook, FaHome, FaMagic, FaServer, FaUpload, FaUser } from 'react-icons/fa';
+import { FaAddressBook, FaHome, FaMagic, FaServer, FaUser } from 'react-icons/fa';
 import { FcViewDetails } from 'react-icons/fc';
-import { MdOutlineRateReview, MdOutlineRequestPage, MdPayment, MdReviews, MdUpcoming } from 'react-icons/md';
+import { MdOutlineRateReview, MdOutlineRequestPage, MdPayment, MdReviews } from 'react-icons/md';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import useAdmin from '../hooks/useAdmin';
 
@@ -33,9 +33,6 @@ const Dashboard = () => {
                             <li className='text-xl'>
                                 <NavLink to='/dashboard/serve'> <FaServer></FaServer> Serve Meals</NavLink>
                             </li>
-                            {/* <li className='text-xl'>
-                                <NavLink to='/dashboard/upcoming'> <MdUpcoming /> Upcoming Meals</NavLink>
-                            </li> */}
                         </>
                             : <>
                                 <li className='text-xl'>
@@ -57,7 +54,6 @@ const Dashboard = () => {
                 <ul className='menu'>
                     <li className='text-xl'><Link to='/'><FaHome></FaHome> Home</Link></li>
                     <li className='text-xl'><Link to='/'><FaMagic></FaMagic> Meals</Link></li>
-                    <li className='text-xl'><Link to='/'><FaUpload></FaUpload> Upcoming Meals</Link></li>
                 </ul>
             </div>
             <div className='flex-1'>
