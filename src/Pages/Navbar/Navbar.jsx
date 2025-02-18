@@ -2,25 +2,31 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/Hotel.jpg'
 import useAuth from '../../hooks/useAuth';
-import { FaBell } from 'react-icons/fa';
-import { LikeContext } from '../../AuthProvider/LikeProvider';
 
 const Navbar = () => {
     const { user, logout } = useAuth()
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const { likeCount } = useContext(LikeContext);
 
     const handleLogout = () => {
         logout()
     }
 
+    const scrollToSection = (id) => {
+        const section = document.getElementById(id);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
     const links = <>
         <li><Link to="/" className="hover:text-blue-400">Home</Link></li>
         <li><Link to="/meal" className="hover:text-blue-400">Meals</Link></li>
+        <li><Link to="/contact" onClick={() => scrollToSection('contact')} className="hover:text-blue-400">Contact</Link></li>
+        <li><Link to="/review" onClick={() => scrollToSection('review')} className="hover:text-blue-400">Review</Link></li>
     </>
 
     return (
-        <div className='sticky top-0 z-50 bg-base-100'>
+        <div className='sticky top-0 z-50 bg-gray-100'>
             <div className="navbar w-11/12 mx-auto py-3">
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -40,7 +46,7 @@ const Navbar = () => {
                         </div>
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                            className="menu menu-sm dropdown-content z-[1] mt-3 p-2 shadow">
                             {links}
                         </ul>
                     </div>
@@ -99,86 +105,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-// import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
-// import { FaBell } from 'react-icons/fa';
-// import useAuth from '../../hooks/useAuth';
-
-// const Navbar = () => {
-//     const { user, logout } = useAuth;
-//     const [dropdownOpen, setDropdownOpen] = useState(false);
-//     // Logout Handler
-//     const handleLogout = () => {
-//         logout();
-//     };
-
-//     return (
-//         <nav className="bg-gray-800 text-white py-4">
-//             <div className="w-11/12 mx-auto flex justify-between items-center px-6">
-//                 {/* Logo */}
-//                 <Link to="/" className="text-2xl font-bold hover:text-blue-400">
-//                     <span className="text-blue-500">HOSTEL MANAGEMENT</span>
-//                 </Link>
-
-//                 {/* Navigation Links */}
-//                 <ul className="flex items-center gap-6">
-//                     <li><Link to="/" className="hover:text-blue-400">Home</Link></li>
-//                     <li><Link to="/meals" className="hover:text-blue-400">Meals</Link></li>
-//                     <li><Link to="/upcoming-meals" className="hover:text-blue-400">Upcoming Meals</Link></li>
-//                     <li>
-//                         {/* Notification Icon */}
-//                         <button className="relative">
-//                             <FaBell className="text-2xl" />
-//                             {/* Optional: Notification Count */}
-//                             <span className="absolute -top-1 -right-2 bg-red-500 text-xs rounded-full w-4 h-4 flex items-center justify-center">
-//                                 3
-//                             </span>
-//                         </button>
-//                     </li>
-
-//                     {/* Authentication Section */}
-//                     <li className="relative">
-//                         {user ? (
-//                             // Profile Picture and Dropdown
-//                             <div className="flex items-center gap-2">
-//                                 <img
-//                                     src={user.photoURL || '/default-avatar.png'}
-//                                     alt="profile"
-//                                     className="w-8 h-8 rounded-full cursor-pointer"
-//                                     onClick={() => setDropdownOpen(!dropdownOpen)}
-//                                 />
-//                                 {dropdownOpen && (
-//                                     <ul className="absolute right-0 mt-2 bg-white text-black p-2 rounded shadow-md">
-//                                         <li className="px-4 py-2 font-semibold">
-//                                             Username: {user.displayName || 'User'}
-//                                         </li>
-//                                         <li className="px-4 py-2 hover:bg-gray-200">
-//                                             <Link to="/dashboard">Dashboard</Link>
-//                                         </li>
-//                                         <li
-//                                             className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-//                                             onClick={handleLogout}
-//                                         >
-//                                             Logout
-//                                         </li>
-//                                     </ul>
-//                                 )}
-//                             </div>
-//                         ) : (
-//                             // Join Us Button (If Not Logged In)
-//                             <Link
-//                                 to="/join-us"
-//                                 className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600"
-//                             >
-//                                 Join Us
-//                             </Link>
-//                         )}
-//                     </li>
-//                 </ul>
-//             </div>
-//         </nav>
-//     );
-// };
-
-// export default Navbar;

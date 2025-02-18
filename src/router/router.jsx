@@ -25,6 +25,7 @@ import UpCommingMeal from "../Pages/UpCommingMeal/UpCommingMeal";
 import CheckOut from "../Pages/CheckOut.jsx/CheckOut";
 import AllReview from "../Pages/AdminDashboard/AllReview.jsx/AllReview";
 import SarveMeal from "../Pages/AdminDashboard/SarveMeal/SarveMeal";
+import Contact from "../Pages/Contact/Contact";
 
 const router = createBrowserRouter([
     {
@@ -59,7 +60,11 @@ const router = createBrowserRouter([
             {
                 path: 'signup',
                 element: <SignUp></SignUp>
-            }
+            },
+            {
+                path: 'contact',
+                element: <Contact></Contact>
+            },
         ]
     },
     {
