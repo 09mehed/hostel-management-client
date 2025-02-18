@@ -26,6 +26,7 @@ import CheckOut from "../Pages/CheckOut.jsx/CheckOut";
 import AllReview from "../Pages/AdminDashboard/AllReview.jsx/AllReview";
 import SarveMeal from "../Pages/AdminDashboard/SarveMeal/SarveMeal";
 import Contact from "../Pages/Contact/Contact";
+import Review from "../Pages/Review/Review";
 
 const router = createBrowserRouter([
     {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
                 path: 'contact',
                 element: <Contact></Contact>
             },
+            {
+                path: 'review',
+                element: <Review></Review>
+            }
         ]
     },
     {
