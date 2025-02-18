@@ -21,12 +21,12 @@ import MyReview from "../Pages/MyDashboard/MyReview";
 import Payment from "../Pages/MyDashboard/Payment";
 import JoinUs from "../Pages/JoinUs/JoinUs";
 import Meal from "../Pages/Meal/Meal";
-import UpCommingMeal from "../Pages/UpCommingMeal/UpCommingMeal";
 import CheckOut from "../Pages/CheckOut.jsx/CheckOut";
 import AllReview from "../Pages/AdminDashboard/AllReview.jsx/AllReview";
 import SarveMeal from "../Pages/AdminDashboard/SarveMeal/SarveMeal";
 import Contact from "../Pages/Contact/Contact";
 import Review from "../Pages/Review/Review";
+import Membership from "../Pages/MemberShip/MemberShip";
 
 const router = createBrowserRouter([
     {
@@ -61,6 +61,10 @@ const router = createBrowserRouter([
             {
                 path: 'signup',
                 element: <SignUp></SignUp>
+            },
+            {
+                path: 'membership',
+                element: <Membership></Membership>
             },
             {
                 path: 'contact',
@@ -116,10 +120,6 @@ const router = createBrowserRouter([
             {
                 path: 'serve',
                 element: <AdminRoute><SarveMeal></SarveMeal></AdminRoute>
-            },
-            {
-                path: 'upcoming',
-                element: <AdminRoute><UpCommingMeal></UpCommingMeal></AdminRoute>
             },
             {
                 path: 'updateItems/:id',
