@@ -1,5 +1,5 @@
 import React from 'react';
-import bgImg from '../../assets/hostel1.jpg'
+import bgImg from '../../assets/banner.avif'
 
 const Slider = () => {
     return (
