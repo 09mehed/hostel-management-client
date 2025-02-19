@@ -1,11 +1,24 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/Hotel.jpg'
 import useAuth from '../../hooks/useAuth';
+import { FaSun } from 'react-icons/fa';
+import { FaMoon } from 'react-icons/fa6';
 
 const Navbar = () => {
     const { user, logout } = useAuth()
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [darkMode, setDarkMode] = useState(localStorage.getItem("theme") === "dark");
+
+    useEffect(() => {
+        if (darkMode) {
+            document.documentElement.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+        }
+    }, [darkMode]);
 
     const handleLogout = () => {
         logout()
@@ -24,7 +37,7 @@ const Navbar = () => {
     </>
 
     return (
-        <div className='sticky top-0 z-50 bg-gray-100'>
+        <div className={`sticky top-0 z-50 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-black'}`}>
             <div className="navbar w-11/12 mx-auto py-3">
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -44,7 +57,7 @@ const Navbar = () => {
                         </div>
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-white shadow-lg border rounded w-40 absolute z-50 mt-2">
+                            className={`menu menu-sm dropdown-content ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} shadow-lg border rounded w-40 absolute z-50 mt-2`}>
                             {links}
                         </ul>
                     </div>
@@ -59,6 +72,10 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
+                    <button onClick={() => setDarkMode(!darkMode)} className="text-xl px-5">
+                        {darkMode ? <FaSun /> : <FaMoon />}
+                    </button>
+
                     <div className='relative'>
                         {user ? (
                             // Profile Picture and Dropdown
