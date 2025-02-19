@@ -8,11 +8,6 @@ import { FaMoon } from 'react-icons/fa6';
 const Navbar = () => {
     const { user, logout, theme, toggleTheme } = useAuth()
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
-
-    const toggleDropdown = () => {
-        setIsOpen(prevState => !prevState);
-    };
 
     const handleLogout = () => {
         logout()
