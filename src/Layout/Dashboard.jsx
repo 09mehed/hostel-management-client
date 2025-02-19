@@ -4,7 +4,6 @@ import { FcViewDetails } from 'react-icons/fc';
 import { MdOutlineRateReview, MdOutlineRequestPage, MdPayment, MdReviews } from 'react-icons/md';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import useAdmin from '../hooks/useAdmin';
-
 const Dashboard = () => {
 
     const [isAdmin] = useAdmin()

@@ -13,10 +13,14 @@ const Navbar = () => {
 
     const links = <>
         <li><Link to="/" className="hover:text-blue-400">Home</Link></li>
-        <li><Link to="/meal" className="hover:text-blue-400">Meals</Link></li>
-        <li><Link to="/membership" className="hover:text-blue-400">Membership</Link></li>
         <li><Link to="/contact" className="hover:text-blue-400">Contact</Link></li>
         <li><Link to="/review" className="hover:text-blue-400">Review</Link></li>
+        {user && (
+            <>
+                <li><Link to="/meal" className="hover:text-blue-400">Meals</Link></li>
+                <li><Link to="/membership" className="hover:text-blue-400">Membership</Link></li>
+            </>
+        )}
     </>
 
     return (
