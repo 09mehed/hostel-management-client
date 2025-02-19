@@ -10,6 +10,16 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true)
     const googleProvider = new GoogleAuthProvider()
     const axiosPublic = useAxiosPublic()
+    const [theme, setTheme] = useState("light");
+
+    const toggleTheme = () => {
+        const newTheme = theme === "light" ? "dark" : "light";
+        setTheme(newTheme);
+    };
+
+    useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+    }, [theme]);
 
     const handleSignUp = (email, password) => {
         setLoading(true)
@@ -68,7 +78,9 @@ const AuthProvider = ({ children }) => {
         handleSignIn,
         handleGoogleLogin,
         logout,
-        updateUserProfile
+        updateUserProfile,
+        theme,
+        toggleTheme
     }
 
     return (
